@@ -5,7 +5,20 @@ export function marketSignal(allocations, historicalRates, timestamp) {
   const state = computeLiquidityState(allocations);
   const velocity = computeVelocity(historicalRates, timestamp);
 
-  if (state === 'tight' && velocity > 0.8) return 'overheated';
-  if (state === 'loose' && velocity < 0.2) return 'cold';
-  return 'neutral';
+  const signal = (state.regime === 'tight' && velocity > 0.8)
+    ? 'overheated'
+    : (state.regime === 'loose' && velocity < 0.2)
+    ? 'cold'
+    : 'neutral';
+
+  return {
+    state: {
+      totalAlloc: state.totalAlloc,
+      totalDemand: state.totalDemand,
+      pressure: state.pressure,
+      regime: state.regime
+    },
+    velocity: Number(velocity.toFixed(4)),
+    signal
+  };
 }
