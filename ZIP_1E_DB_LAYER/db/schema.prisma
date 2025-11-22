@@ -1,0 +1,37 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Project {
+  id        String   @id @default(uuid())
+  name      String
+  tract     String
+  distress  Int
+  impact    Int
+  createdAt DateTime @default(now())
+}
+
+model CDE {
+  id        String   @id @default(uuid())
+  name      String
+  serviceArea String
+  allocations Allocation[]
+}
+
+model Investor {
+  id    String @id @default(uuid())
+  name  String
+  type  String
+}
+
+model Allocation {
+  id      String @id @default(uuid())
+  cdeId   String
+  amount  Int
+  CDE     CDE    @relation(fields: [cdeId], references: [id])
+}
