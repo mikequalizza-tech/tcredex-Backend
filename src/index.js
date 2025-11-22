@@ -6,8 +6,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-
-// Register your /liquidity route
 app.use('/', liquidityRouter);
 
 app.listen(PORT, () => {
