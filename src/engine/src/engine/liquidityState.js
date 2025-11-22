@@ -1,8 +1,10 @@
-export function computeLiquidityState({ totalAvailable, totalDemand, commitmentsPending }) {
-  const netAvailable = totalAvailable - commitmentsPending;
-  const utilizationRatio = totalDemand / netAvailable;
+export function computeLiquidityState(allocations) {
+  const totalAllocated = allocations.reduce((acc, a) => acc + Number(a.amount), 0);
+  const totalAvailable = allocations.reduce((acc, a) => acc + Number(a.ceiling), 0);
 
-  if (utilizationRatio >= 1.2) return 'tight';
-  if (utilizationRatio <= 0.8) return 'loose';
+  const ratio = totalAllocated / totalAvailable;
+
+  if (ratio > 0.85) return 'tight';
+  if (ratio < 0.5) return 'loose';
   return 'balanced';
 }
