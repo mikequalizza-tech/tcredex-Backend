@@ -8,3 +8,4 @@ export function computeLiquidityState(allocations) {
   if (ratio < 0.5) return 'loose';
   return 'balanced';
 }
+ 
